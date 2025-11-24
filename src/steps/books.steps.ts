@@ -44,7 +44,7 @@ When('I add a valid new book', async function (this: PlaywrightWorld) {
   const title = faker.lorem.words({ min: 2, max: 4 });
   const author = faker.person.fullName();
   const isbn = generateValidISBN13();
-  const price = faker.number.float({ min: 5, max: 100, precision: 0.01 }).toFixed(2);
+  const price = faker.number.float({ min: 5, max: 100, }).toFixed(2);
 
   // Save in world for later assertions
   (this as any).lastBook = { title, author, isbn, price };

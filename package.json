@@ -2,9 +2,12 @@
   "name": "books-catalog-playwright-bdd-tests",
   "version": "1.0.0",
   "private": true,
-  "scripts": {
-    "test:bdd": "cucumber-js"
-  },
+ 
+"scripts": {
+  "build": "tsc",
+  "test:bdd": "npm run build && cucumber-js --require dist/steps/**/*.js --require dist/support/**/*.js features/**/*.feature"
+},
+
   "devDependencies": {
     "@cucumber/cucumber": "^11.0.0",
     "@faker-js/faker": "^9.0.0",
