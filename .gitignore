@@ -1,0 +1,15 @@
+cat << 'EOF' > .gitignore
+node_modules/
+dist/
+build/
+coverage/
+.vscode/
+.npm/
+npm-debug.log*
+yarn-error.log*
+playwright-report/
+test-results/
+.env
+.env.*
+reports/
+EOF
