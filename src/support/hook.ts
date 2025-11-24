@@ -1,10 +1,13 @@
 import { Before, After } from '@cucumber/cucumber';
-import { PlaywrightWorld } from './world';
+import { chromium } from '@playwright/test';
 
-Before(async function (this: PlaywrightWorld) {
-  await this.init();
+Before(async function () {
+  this.browser = await chromium.launch({ headless: false });
+  const context = await this.browser.newContext();
+  this.page = await context.newPage();
 });
 
-After(async function (this: PlaywrightWorld) {
-  await this.dispose();
+After(async function () {
+  await this.page.close();
+  await this.browser.close();
 });

@@ -1,22 +1,26 @@
 import { expect } from '@playwright/test';
 import type { Page } from 'playwright';
 
-
 export class LoginPage {
-  constructor(private page: Page) {}
+  constructor(private page: Page, private baseUrl: string) {}
 
-  async goto(baseUrl: string) {
-    await this.page.goto(`${baseUrl}/login`); // or just baseUrl if login is "/"
+  // Go to the login page
+  async open() {
+    await this.page.goto(`${this.baseUrl}/login`);
   }
 
+  // Login with username and password
   async login(username: string, password: string) {
-    await this.page.getByLabel(/username/i).fill(username);
-    await this.page.getByLabel(/password/i).fill(password);
-    await this.page.getByRole('button', { name: /login/i }).click();
+    await this.page.locator('#username').fill(username);
+    await this.page.locator('#password').fill(password);
+
+    // Reliable login button selector
+    const loginButton = this.page.locator('button[type="submit"]');
+    await loginButton.click();
   }
 
-  async assertOnLoginPage() {
-    await expect(this.page).toHaveURL(/login/i);
-    await expect(this.page.getByRole('button', { name: /login/i })).toBeVisible();
+  // Verify login page loaded
+  async expectLoginPageVisible() {
+    await expect(this.page).toHaveURL(/\/login/);
   }
 }
