@@ -13,3 +13,4 @@ test-results/
 .env.*
 reports/
 EOF
+.DS_Store
