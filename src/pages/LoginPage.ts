@@ -1,26 +1,39 @@
+
 import { expect } from '@playwright/test';
 import type { Page } from 'playwright';
 
 export class LoginPage {
-  constructor(private page: Page, private baseUrl: string) {}
 
-  // Go to the login page
+  constructor(private page: any, private baseUrl: string) {}
+
   async open() {
     await this.page.goto(`${this.baseUrl}/login`);
   }
 
-  // Login with username and password
-  async login(username: string, password: string) {
-    await this.page.locator('#username').fill(username);
-    await this.page.locator('#password').fill(password);
-
-    // Reliable login button selector
-    const loginButton = this.page.locator('button[type="submit"]');
-    await loginButton.click();
-  }
-
-  // Verify login page loaded
   async expectLoginPageVisible() {
-    await expect(this.page).toHaveURL(/\/login/);
+    await expect(this.page).toHaveURL(/\/login$/i);
+    await expect(this.page.getByRole('button', { name: /login/i })).toBeVisible();
   }
+
+  async fillCredentials(username: string, password: string) {
+    
+    await this.page.getByRole('textbox', { name: /username/i }).fill(username);
+    await this.page.getByRole('textbox', { name: /password/i }).fill(password);
+  }
+
+  async login(username: string, password: string) {
+    await this.fillCredentials(username, password);
+    await this.submit();
+  }
+
+  async submit() {
+    await this.page.getByRole('button', { name: /login/i }).click();
+  }
+
+  async expectErrorMessage(_message: string) {
+    await expect(
+      this.page.getByText(/there is a problem with your submission/i)
+    ).toBeVisible();
+  }
+  
 }
